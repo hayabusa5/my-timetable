@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>オンライン時間割表</title>
+    <style>
+        /* 既存のCSSは省略 */
+        .thumbnail {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- 既存のHTMLは省略 -->
+
+    <div id="drag-drop-area" style="border: 2px dashed #ccc; width: 300px; height: 100px; display: flex; align-items: center; justify-content: center;">
+        ドラッグ&ドロップでURLを追加
+    </div>
+
+    <script>
+        // 既存のJavaScriptは省略
+
+        var dragDropArea = document.getElementById('drag-drop-area');
+
+        dragDropArea.addEventListener('dragover', function (event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'copy';
+        });
+
+        dragDropArea.addEventListener('drop', async function (event) {
+            event.preventDefault();
+            var url = event.dataTransfer.getData('text');
+            if (url) {
+                var cell = prompt('セルを選択してください (例: 1-1)');
+                var cellElement = document.getElementById(`cell-${cell}`);
+                if (cellElement) {
+                    var videoId = getVideoId(url);
+                    if (videoId) {
+                        var thumbnailUrl = `https://img.youtube.com/vi/${videoId}/0.jpg`;
+                        var title = await getVideoTitle(videoId);
+                        cellElement.innerHTML = `
+                            <a href="${url}" target="_blank">
+                                <img class="thumbnail" src="${thumbnailUrl}" alt="${title}">
+                                <p>${title}</p>
+                            </a>
+                        `;
+                    } else {
+                        alert('無効なURLです。');
+                    }
+                } else {
+                    alert('無効なセルです。');
+                }
+            } else {
+                alert('URLを入力してください。');
+            }
+        });
+    </script>
+</body>
+</html>
