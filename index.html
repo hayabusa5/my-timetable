@@ -26,10 +26,6 @@
         .url-input {
             margin-top: 20px;
         }
-        .thumbnail {
-            max-width: 100%;
-            height: auto;
-        }
     </style>
 </head>
 <body>
@@ -57,41 +53,19 @@
             <!-- 同様に他の時間帯も追加してください -->
         </tbody>
     </table>
-
-    <div id="drag-drop-area" style="border: 2px dashed #ccc; width: 300px; height: 100px; display: flex; align-items: center; justify-content: center;">
-        ドラッグ&ドロップでURLを追加
+    <div class="url-input">
+        <label for="url">動画のURLを入力してください: </label>
+        <input type="url" id="url" placeholder="https://...">
+        <button id="add-url">追加</button>
     </div>
-
     <script>
-        
-
-        var dragDropArea = document.getElementById('drag-drop-area');
-
-        dragDropArea.addEventListener('dragover', function (event) {
-            event.preventDefault();
-            event.dataTransfer.dropEffect = 'copy';
-        });
-
-        dragDropArea.addEventListener('drop', async function (event) {
-            event.preventDefault();
-            var url = event.dataTransfer.getData('text');
+        document.getElementById('add-url').addEventListener('click', function() {
+            var url = document.getElementById('url').value;
             if (url) {
                 var cell = prompt('セルを選択してください (例: 1-1)');
                 var cellElement = document.getElementById(`cell-${cell}`);
                 if (cellElement) {
-                    var videoId = getVideoId(url);
-                    if (videoId) {
-                        var thumbnailUrl = `https://img.youtube.com/vi/${videoId}/0.jpg`;
-                        var title = await getVideoTitle(videoId);
-                        cellElement.innerHTML = `
-                            <a href="${url}" target="_blank">
-                                <img class="thumbnail" src="${thumbnailUrl}" alt="${title}">
-                                <p>${title}</p>
-                            </a>
-                        `;
-                    } else {
-                        alert('無効なURLです。');
-                    }
+                    cellElement.innerHTML = `<a href="${url}" target="_blank">${url}</a>`;
                 } else {
                     alert('無効なセルです。');
                 }
