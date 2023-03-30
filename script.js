@@ -25,7 +25,7 @@ async function addVideo(id) {
   if (!url) return;
 
   const videoId = url.split('v=')[1];
-  const apiKey = 'YOUR_API_KEY';
+  const apiKey = 'AIzaSyDE9dAaZBC7lSiWzdFC5PdJSVJCmgz0YJE';
   const apiUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${apiKey}&part=snippet`;
 
   try {
